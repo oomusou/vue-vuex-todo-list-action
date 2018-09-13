@@ -2,7 +2,9 @@
   <div id="app">
     <input type="text" v-model="input"><button @click="addItem">Add</button>
     <ul>
-      <li v-for="(item, index) in todos" @click="removeItem(index)" :key="index">{{ item }}</li>
+      <li v-for="(item, index) in todos" @click="finishItem(index)" :key="index">
+        {{ item.title }}, {{ item.completed }}
+      </li>
     </ul>
   </div>
 </template>
@@ -23,9 +25,12 @@ export default {
       this.$store.commit('addItem', this.input);
       this.input = '';
     },
-    removeItem(index) {
-      this.$store.commit('removeItem', index);
+    finishItem(index) {
+      this.$store.commit('finishItem', index);
     },
+  },
+  mounted() {
+    this.$store.dispatch('fetchTodos');
   },
 };
 </script>

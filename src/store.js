@@ -1,25 +1,36 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    todos: [
-      'I have a pen',
-      'I have an apple',
-      'ahh apple-pen',
-    ],
+    todos: [],
   },
   mutations: {
-    addItem(state, payload) {
-      state.todos.push(payload);
+    setTodos(state, payload) {
+      state.todos = payload;
     },
-    removeItem(state, index) {
-      state.todos.splice(index, 1);
+    addItem(state, payload) {
+      state.todos.push({ title: payload, completed: false });
+    },
+    finishItem(state, index) {
+      state.todos[index].completed = true;
     },
   },
   actions: {
+    fetchTodos({ commit }) {
+      const endpoint = 'https://jsonplaceholder.typicode.com/todos';
 
+      const response = res => commit('setTodos', res.data.slice(0, 5));
+
+      const error = e => console.log(e);
+
+      axios
+        .get(endpoint)
+        .then(response)
+        .catch(error);
+    },
   },
 });
