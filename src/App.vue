@@ -1,28 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <input type="text" v-model="input"><button @click="addItem">Add</button>
+    <ul>
+      <li v-for="(item, index) in todos" @click="removeItem(index)" :key="index">{{ item }}</li>
+    </ul>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import { mapState } from 'vuex';
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld,
+  data() {
+    return {
+      input: '',
+    };
+  },
+  computed: mapState(['todos']),
+  methods: {
+    addItem() {
+      this.$store.commit('addItem', this.input);
+      this.input = '';
+    },
+    removeItem(index) {
+      this.$store.commit('removeItem', index);
+    },
   },
 };
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
