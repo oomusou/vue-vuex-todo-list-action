@@ -10,27 +10,23 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapMutations, mapActions } from 'vuex';
+import store from './store';
 
 export default {
   name: 'app',
-  data() {
-    return {
-      input: '',
-    };
-  },
+  data: () => ({ input: '' }),
   computed: mapState(['todos']),
   methods: {
+    ...mapMutations(['finishItem']),
+    ...mapActions(['fetchTodos']),
     addItem() {
-      this.$store.commit('addItem', this.input);
+      store.commit('addItem', this.input);
       this.input = '';
-    },
-    finishItem(index) {
-      this.$store.commit('finishItem', index);
     },
   },
   mounted() {
-    this.$store.dispatch('fetchTodos');
+    this.fetchTodos();
   },
 };
 </script>

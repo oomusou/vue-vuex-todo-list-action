@@ -9,22 +9,14 @@ export default new Vuex.Store({
     todos: [],
   },
   mutations: {
-    setTodos(state, payload) {
-      state.todos = payload;
-    },
-    addItem(state, payload) {
-      state.todos.push({ title: payload, completed: false });
-    },
-    finishItem(state, index) {
-      state.todos[index].completed = true;
-    },
+    setTodos: (state, payload) => state.todos = payload,
+    addItem: (state, payload) => state.todos.push({ title: payload, completed: false }),
+    finishItem: (state, index) => state.todos[index].completed = !state.todos[index].completed,
   },
   actions: {
     fetchTodos({ commit }) {
       const endpoint = 'https://jsonplaceholder.typicode.com/todos';
-
       const response = res => commit('setTodos', res.data.slice(0, 5));
-
       const error = e => console.log(e);
 
       axios
